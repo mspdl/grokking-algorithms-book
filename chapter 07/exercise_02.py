@@ -18,6 +18,8 @@ def find_route(current, end):
     while unvisited:
         min_vertex = min(unvisited, key=unvisited.get)
         for neighbour, distance in distances[current].items():
+            if distance < 0:
+                return None, None
             if neighbour not in unvisited: 
                 continue
             new_distance = current_distance + distance
@@ -34,11 +36,14 @@ def find_route(current, end):
 
 parents, distance = find_route(start, end)
 
-path = end
-for toX, fromX in list(reversed(parents.items())):
-   if end == toX:
-      path += " >- " + fromX
-      end = fromX
-    
-print("travelled path = " + path[::-1])
-print("travelled distance = " + str(distance))
+if parents == None or distance == None:
+    print("It's not possible to find the nearest path with a negative vertice!")
+else:  
+  path = end
+  for toX, fromX in list(reversed(parents.items())):
+    if end == toX:
+        path += " >- " + fromX
+        end = fromX
+      
+  print("travelled path = " + path[::-1])
+  print("travelled distance = " + str(distance))
